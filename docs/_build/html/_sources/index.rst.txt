@@ -9,14 +9,14 @@ Welcome to MBSE-2022-1/Firmware-Team's documentation!
 Hello world!!!
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
    pages/hardware-uses
    pages/hardware-references
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Files:
 
    pages/dummy1
