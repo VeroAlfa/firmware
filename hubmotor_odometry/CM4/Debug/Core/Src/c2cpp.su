@@ -1,0 +1,6 @@
+../Core/Src/c2cpp.c:17:6:xicro_begin	16	static
+../Core/Src/c2cpp.c:22:6:xicro_publish_nav	64	static
+../Core/Src/c2cpp.c:27:6:xicro_publish_imu	48	static
+../Core/Src/c2cpp.c:32:6:xicro_spin_node	8	static
+../Core/Src/c2cpp.c:37:7:xicro_get_linvel	8	static
+../Core/Src/c2cpp.c:42:7:xicro_get_angvel	8	static

@@ -1,0 +1,11 @@
+/opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.linux64_1.0.0.202111181127/tools/arm-none-eabi/include/c++/10.3.1/arm-none-eabi/thumb/v7e-m+fp/hard/bits/gthr-default.h:229:1:int __gthread_key_delete(__gthread_key_t)	16	static
+../Core/Src/UserCode.cpp:20:6:void UserXicroBegin(UART_HandleTypeDef*)	16	static
+../Core/Src/UserCode.cpp:25:6:void UserXicroPublishNAV(float, float, float, float, float, float, float, float, float, float, float, float, float)	64	static
+../Core/Src/UserCode.cpp:30:6:void UserXicroPublishIMU(float, float, float, float, float, float, float, float, float, float)	48	static
+../Core/Src/UserCode.cpp:35:6:void UserXicroSpin()	8	static
+../Core/Src/UserCode.cpp:40:7:float UserXicroGetLinVel()	4	static
+../Core/Src/UserCode.cpp:45:7:float UserXicroGetAngVel()	4	static
+../Core/Inc/Xicro_sub_N_pub_ID_3.h:14:7:Xicro::~Xicro()	16	static
+../Core/Src/UserCode.cpp:48:1:void __static_initialization_and_destruction_0(int, int)	16	static
+../Core/Src/UserCode.cpp:48:1:cpp)	8	static
+../Core/Src/UserCode.cpp:48:1:cpp)	8	static

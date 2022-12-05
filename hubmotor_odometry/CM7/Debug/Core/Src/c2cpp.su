@@ -1,0 +1,8 @@
+../Core/Src/c2cpp.c:19:6:setup	8	static
+../Core/Src/c2cpp.c:25:6:loop	8	static
+../Core/Src/c2cpp.c:31:7:update_rightwheel	16	static
+../Core/Src/c2cpp.c:37:7:update_leftwheel	16	static
+../Core/Src/c2cpp.c:42:7:get_rw_speed_variance	8	static
+../Core/Src/c2cpp.c:47:7:get_lw_speed_variance	8	static
+../Core/Src/c2cpp.c:52:7:get_lin_vel_variance	8	static
+../Core/Src/c2cpp.c:57:7:get_ang_vel_variance	8	static

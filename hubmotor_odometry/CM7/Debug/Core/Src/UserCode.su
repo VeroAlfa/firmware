@@ -1,0 +1,13 @@
+../Core/Src/UserCode.cpp:55:6:void UserCodeSetup()	20	static
+../Core/Src/UserCode.cpp:108:6:void UserCodeLoop()	0	static
+../Core/Src/UserCode.cpp:145:7:float UserGetRWSpeedVariance()	0	static
+../Core/Src/UserCode.cpp:149:7:float UserGetLWSpeedVariance()	0	static
+/home/veroalfa/STM32CubeIDE/workspace_1.10.1/hubmotor_odometry/CM7/eigen-3.4.0/Eigen/src/Core/AssignEvaluator.h:834:6:void Eigen::internal::call_assignment(Dst&, const Src&) [with Dst = Eigen::Matrix<float, 3, 3>; Src = Eigen::CwiseBinaryOp<Eigen::internal::scalar_sum_op<float, float>, const Eigen::Product<Eigen::Product<Eigen::Matrix<float, 3, 3>, Eigen::Matrix<float, 3, 3>, 0>, Eigen::Transpose<Eigen::Matrix<float, 3, 3> >, 0>, const Eigen::Product<Eigen::Product<Eigen::Matrix<float, 3, 1>, Eigen::Matrix<float, 1, 1>, 0>, Eigen::Transpose<Eigen::Matrix<float, 3, 1> >, 0> >]	96	static
+../Core/Src/UserCode.cpp:115:6:void Predict_RightWheel()	40	static
+../Core/Src/UserCode.cpp:120:6:void Predict_LeftWheel()	40	static
+/home/veroalfa/STM32CubeIDE/workspace_1.10.1/hubmotor_odometry/CM7/eigen-3.4.0/Eigen/src/Core/Matrix.h:329:14:Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Matrix(const T&) [with T = Eigen::Product<Eigen::Product<Eigen::Matrix<float, 2, 2>, Eigen::Matrix<float, 2, 2>, 0>, Eigen::Transpose<Eigen::Matrix<float, 2, 2> >, 0>; _Scalar = float; int _Rows = 2; int _Cols = 2; int _Options = 1; int _MaxRows = 2; int _MaxCols = 2]	64	static
+../Core/Src/UserCode.cpp:153:7:float UserGetLinVelVariance()	48	static
+../Core/Src/UserCode.cpp:160:7:float UserGetAngVelVariance()	48	static
+/home/veroalfa/STM32CubeIDE/workspace_1.10.1/hubmotor_odometry/CM7/eigen-3.4.0/Eigen/src/Core/AssignEvaluator.h:769:44:void Eigen::internal::call_dense_assignment_loop(DstXprType&, const SrcXprType&, const Functor&) [with DstXprType = Eigen::Matrix<float, -1, 3>; SrcXprType = Eigen::Product<Eigen::CwiseBinaryOp<Eigen::internal::scalar_difference_op<float, float>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_identity_op<float>, Eigen::Matrix<float, -1, -1> >, const Eigen::Product<Eigen::Matrix<float, 3, 2>, Eigen::Matrix<float, 2, 3>, 0> >, Eigen::Matrix<float, 3, 3>, 1>; Functor = Eigen::internal::assign_op<float, float>]	32	static
+../Core/Src/UserCode.cpp:135:7:float UserCodeUpdateLeftWheel(float, float)	104	static
+../Core/Src/UserCode.cpp:125:7:float UserCodeUpdateRightWheel(float, float)	104	static
