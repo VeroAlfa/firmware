@@ -15,6 +15,12 @@ Hello world!!!
    pages/hardware-uses
    pages/hardware-references
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Files:
+
+   pages/dummy1
+   pages/dummy2
 
 Indices and tables
 ==================
