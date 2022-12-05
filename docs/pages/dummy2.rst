@@ -1,4 +1,4 @@
-Just Dummy 2
+Dummy 2
 =============
 
 Key Goals
