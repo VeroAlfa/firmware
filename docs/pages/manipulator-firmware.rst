@@ -1,5 +1,5 @@
-Dummy 2
-=============
+Manipulator Firmware
+====================
 
 Key Goals
 ----------

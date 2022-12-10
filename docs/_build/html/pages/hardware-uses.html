@@ -38,15 +38,30 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">File:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Hardware Uses</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Hardware Uses</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#stm32">STM32</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hub-motor-and-driver">Hub Motor and Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inertial-measurement-unit-imu">Inertial Measurement Unit (IMU)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#microcontroller">Microcontroller</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ros2-package">ROS2 Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sub1">Sub1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sub2">Sub2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sub3">Sub3</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="hardware-references.html">Hardware References</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Files:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="dummy1.html">Dummy 1</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dummy2.html">Dummy 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manipulator-firmware.html">Manipulator Firmware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mobile-robot-firmware.html">Mobile Robot Firmware</a></li>
 </ul>
 
         </div>
@@ -75,6 +90,52 @@
              
   <div class="section" id="hardware-uses">
 <h1>Hardware Uses<a class="headerlink" href="#hardware-uses" title="Permalink to this heading"></a></h1>
+<div class="section" id="stm32">
+<h2>STM32<a class="headerlink" href="#stm32" title="Permalink to this heading"></a></h2>
+<div class="section" id="hub-motor-and-driver">
+<h3>Hub Motor and Driver<a class="headerlink" href="#hub-motor-and-driver" title="Permalink to this heading"></a></h3>
+<p>Firmware-Team is using ZLTECH’s hub motor and driver provided by Aj.Pi for both wheels.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Product Name</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Hub Motor</p></td>
+<td><p>ZLLG65ASM250-4096 V2.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Driver</p></td>
+<td><p>ZLAC706-CAN</p></td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference external" href="http://zlrobotmotor.com/info/383.html">ZLLG65ASM250-4096 V2.0</a> is a ZLTECH’s servo hub motor with an built-in encoder
+specially designed for mobile robot application and also powered by 24-48 VDC. Here is some specification of this hub motor</p>
+<img alt="../_images/hubmotor_spec.jpg" src="../_images/hubmotor_spec.jpg" />
+<p><a class="reference external" href="https://drive.google.com/file/d/1_zax1QebzwfDw8Wtzx-VV3qV7C4o2Byv/view">ZLAC706-CAN</a> is a ZLTECH’s servo driver with CAN communication protocol</p>
+</div>
+<div class="section" id="inertial-measurement-unit-imu">
+<h3>Inertial Measurement Unit (IMU)<a class="headerlink" href="#inertial-measurement-unit-imu" title="Permalink to this heading"></a></h3>
+</div>
+<div class="section" id="microcontroller">
+<h3>Microcontroller<a class="headerlink" href="#microcontroller" title="Permalink to this heading"></a></h3>
+</div>
+</div>
+<div class="section" id="ros2-package">
+<h2>ROS2 Package<a class="headerlink" href="#ros2-package" title="Permalink to this heading"></a></h2>
+<div class="section" id="sub1">
+<h3>Sub1<a class="headerlink" href="#sub1" title="Permalink to this heading"></a></h3>
+</div>
+<div class="section" id="sub2">
+<h3>Sub2<a class="headerlink" href="#sub2" title="Permalink to this heading"></a></h3>
+</div>
+<div class="section" id="sub3">
+<h3>Sub3<a class="headerlink" href="#sub3" title="Permalink to this heading"></a></h3>
 <div class="admonition caution">
 <p class="admonition-title">Caution</p>
 <p>The Firmware-Team is using hubmotor and imu sensor.</p>
@@ -90,6 +151,8 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The Firmware-Team is using hubmotor and imu sensor.</p>
+</div>
+</div>
 </div>
 </div>
 

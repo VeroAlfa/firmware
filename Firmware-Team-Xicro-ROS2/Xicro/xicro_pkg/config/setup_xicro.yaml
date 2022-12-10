@@ -1,0 +1,8 @@
+Idmcu: 3
+Namespace: "sub_N_pub"
+Port: "/dev/ttyACM0"
+generate_library_Path: "xicro/libraries"
+Baudrate: 576000
+Setup_Publisher:  [         [1,"nav_stm32","xicro_interfaces/Odometry.msg"], [2,"imu_stm32","xicro_interfaces/Imu.msg"]         ]
+Setup_Subscriber: [         [1,"cmd_vel_stm32","xicro_interfaces/DiffDriveTwist.msg"]          ]
+Setup_Srv_client: [                  ]

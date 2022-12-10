@@ -1,0 +1,3 @@
+xicro_interfaces/Quaternion orientation  
+xicro_interfaces/Vector3 angular_velocity
+xicro_interfaces/Vector3 linear_acceleration
