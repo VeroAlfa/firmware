@@ -1,3 +1,13 @@
 ===============
 Microcontroller
 ===============
+
+According to ZLAC706-CAN hub motor driver, the simplest way to control speed of both motors and to achieve position/speed
+feedback for state estimation is Controller Area Network (CAN Bus) which is different from normal single-ended communication
+like I2C or SPI because of its logic level and some additional setup to perform perfect communication. This makes the method
+of communication unpopular to be installed on general purpose microcontroller like STM32F411RE. But in the same high performance
+mcu family, there is STM32H745ZI dual core mcu which has CAN peripheral called FDCAN. So we decided to use this mcu as our main
+controller as it has all features we need and dual cores make it easy to prioritize tasks.
+
+NUCLEO-H745ZI-Q
+---------------

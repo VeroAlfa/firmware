@@ -94,7 +94,7 @@ System Architecture
    pages/hardware-uses
    pages/hardware-references
 
-Indices and tables
+Links
 ==================
 
 * :ref:`genindex`
