@@ -142,4 +142,5 @@ Links
 
 * Source code 1: https://github.com/MBSE-2022-1/Firmware-Team
 * Source code 2: https://github.com/VeroAlfa/firmware
+* Firmware-only Documentation: https://firmware-docs.readthedocs.io/en/latest/
 * Presentation: `Canva <https://www.canva.com/design/DAFJLsuDONk/y8OhFXQYMBOMdz5iGOFIEg/view?utm_content=DAFJLsuDONk&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink>`_
