@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="IMU Interface" href="imu-interface.html" />
-    <link rel="prev" title="MBSE-2022-1/Firmware-Team Documentation" href="../index.html" /> 
+    <link rel="prev" title="IMU Sensor" href="imu-sensor.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -38,15 +38,47 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Microcontroller System:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Hardwares and Connection:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="microcontroller.html">Microcontroller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hub-motor-and-driver.html">Hub Motor and Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imu-sensor.html">IMU Sensor</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Microcontroller Subsystem:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Hub Motor Interface</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Hub Motor Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#can-bus-communication">CAN Bus Communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hub-motor-driver-connection">Hub Motor Driver Connection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stm32-fdcan-specification">STM32 FDCAN Specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hub-motor-function">Hub Motor Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#runtime-test">Runtime Test</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="imu-interface.html">IMU Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wheel-velocity-estimation.html">Wheel Velocity Estimation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="forward-kinematics.html">Forward Kinematics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="inverse-kinematics.html">Inverse Kinematics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wheel-odometry-computation.html">Wheel Odometry Computation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ros2-interface.html">ROS2 Interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">ROS2:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ros2-setup.html">ROS2 Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xicro-package.html">Xicro Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="calibration-package.html">Calibration Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="step-to-open.html">Steps to open ROS2 nodes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Gripper:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="hardware-gripper.html">Hardware Gripper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="control-algorithm.html">Control Algorithms</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Test and Evaluation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="process-timing.html">Process Timing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wheel-odometry.html">Wheel Odometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gripper-experiment.html">Gripper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="summary.html">Firmware Summary</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
@@ -86,13 +118,362 @@
              
   <div class="section" id="hub-motor-interface">
 <h1>Hub Motor Interface<a class="headerlink" href="#hub-motor-interface" title="Permalink to this heading"></a></h1>
+<div class="section" id="can-bus-communication">
+<h2>CAN Bus Communication<a class="headerlink" href="#can-bus-communication" title="Permalink to this heading"></a></h2>
+<p>CAN communication is the method of communication where devices act as nodes compose of Host, CAN Controller and CAN Transceiver.
+ZLAC706-CAN act as 1 node but STM32H745ZI only act as Host and CAN Controller. So we need additional transceiver connect at the
+output of fdcan port to perform 1 node. The baudrate of CAN is also ranged from 500 kHz to 1 MHz</p>
+<img alt="../_images/can_connection.png" class="align-center" src="../_images/can_connection.png" />
+</div>
+<div class="section" id="hub-motor-driver-connection">
+<h2>Hub Motor Driver Connection<a class="headerlink" href="#hub-motor-driver-connection" title="Permalink to this heading"></a></h2>
+<p>Here’s the KiCad schematic of hub motor driver including STM32H745ZI fdcan port, can transceiver, can bus and hub motor.</p>
+<img alt="../_images/can_schematic.png" class="align-center" src="../_images/can_schematic.png" />
+</div>
+<div class="section" id="stm32-fdcan-specification">
+<h2>STM32 FDCAN Specification<a class="headerlink" href="#stm32-fdcan-specification" title="Permalink to this heading"></a></h2>
+<ul>
+<li><p>Frame format: Classic CAN</p></li>
+<li><p>Baudrate: 500 kHz</p></li>
+<li><p>Auto retransmission: Enable</p></li>
+<li><p>Data length: 8 bytes</p></li>
+<li><p>Left motor CAN ID: 0x11</p></li>
+<li><p>Right motor CAN ID: 0x22</p></li>
+<li><p>CAN Mask Filter (For detect specific ID)</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Filter for detect 0x11 (Left motor)</p></li>
+</ul>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">FDCAN_FilterTypeDef</span><span class="w"> </span><span class="n">sFilterConfig</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">sFilterConfig</span><span class="p">.</span><span class="n">IdType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FDCAN_STANDARD_ID</span><span class="p">;</span><span class="w"></span>
+<span class="n">sFilterConfig</span><span class="p">.</span><span class="n">FilterIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">sFilterConfig</span><span class="p">.</span><span class="n">FilterType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FDCAN_FILTER_MASK</span><span class="p">;</span><span class="w"></span>
+<span class="n">sFilterConfig</span><span class="p">.</span><span class="n">FilterConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FDCAN_FILTER_TO_RXFIFO0</span><span class="p">;</span><span class="w"></span>
+<span class="n">sFilterConfig</span><span class="p">.</span><span class="n">FilterID1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x11</span><span class="p">;</span><span class="w"></span>
+<span class="n">sFilterConfig</span><span class="p">.</span><span class="n">FilterID2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x7FF</span><span class="p">;</span><span class="w">        </span><span class="cm">/* For acceptance, MessageID and FilterID1 must match exactly 0x7FF*/</span><span class="w"></span>
+<span class="n">sFilterConfig</span><span class="p">.</span><span class="n">RxBufferIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Filter for detect 0x22 (Right motor)</p></li>
+</ul>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">FDCAN_FilterTypeDef</span><span class="w"> </span><span class="n">sFilterConfig</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">sFilterConfig</span><span class="p">.</span><span class="n">IdType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FDCAN_STANDARD_ID</span><span class="p">;</span><span class="w"></span>
+<span class="n">sFilterConfig</span><span class="p">.</span><span class="n">FilterIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">sFilterConfig</span><span class="p">.</span><span class="n">FilterType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FDCAN_FILTER_MASK</span><span class="p">;</span><span class="w"></span>
+<span class="n">sFilterConfig</span><span class="p">.</span><span class="n">FilterConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FDCAN_FILTER_TO_RXFIFO1</span><span class="p">;</span><span class="w"></span>
+<span class="n">sFilterConfig</span><span class="p">.</span><span class="n">FilterID1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x22</span><span class="p">;</span><span class="w"></span>
+<span class="n">sFilterConfig</span><span class="p">.</span><span class="n">FilterID2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x7FF</span><span class="p">;</span><span class="w">        </span><span class="cm">/* For acceptance, MessageID and FilterID1 must match exactly */</span><span class="w"></span>
+<span class="n">sFilterConfig</span><span class="p">.</span><span class="n">RxBufferIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="hub-motor-function">
+<h2>Hub Motor Function<a class="headerlink" href="#hub-motor-function" title="Permalink to this heading"></a></h2>
+<p>These function are implemented base on ZLAC706-CAN speed mode in <a class="reference external" href="https://drive.google.com/file/d/1_zax1QebzwfDw8Wtzx-VV3qV7C4o2Byv/view">datasheet</a>.</p>
+<ul class="simple">
+<li><p>CAN communication test command: <code class="docutils literal notranslate"><span class="pre">RightMotor_TestCommand()</span></code></p></li>
+</ul>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">RightMotor_TestCommand</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Clear Tx data</span>
+<span class="w">    </span><span class="n">TxData_Clear</span><span class="p">(</span><span class="n">TxData1</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Set Working mode to Position mode (used as Test command)</span>
+<span class="w">    </span><span class="n">TxData1</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x19</span><span class="p">;</span><span class="w">      </span><span class="c1">// internal address</span>
+<span class="w">    </span><span class="n">TxData1</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x3F</span><span class="p">;</span><span class="w">      </span><span class="c1">// set position mode value</span>
+<span class="w">    </span><span class="c1">// Sent command to ZLAC706-CAN motor driver</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">HAL_FDCAN_AddMessageToTxFifoQ</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hfdcan1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">TxHeader1</span><span class="p">,</span><span class="w"> </span><span class="n">TxData1</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">HAL_OK</span><span class="p">)</span><span class="w">     </span><span class="p">{</span><span class="n">Error_Handler</span><span class="p">();}</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Wait until tx message is received at the rx</span>
+<span class="w">    </span><span class="n">TxWriteMsg1_isReturn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">TxWriteMsg1_isReturn</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Hub motor set speed mode: <code class="docutils literal notranslate"><span class="pre">BothMotor_Set_SpeedMode(float</span> <span class="pre">initial_right_speed_rpm,</span> <span class="pre">float</span> <span class="pre">initial_left_speed_rpm,</span> <span class="pre">uint8_t</span> <span class="pre">acc_time,</span> <span class="pre">uint8_t</span> <span class="pre">dec_time)</span></code></p></li>
+</ul>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">BothMotor_Set_SpeedMode</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">initial_right_speed_rpm</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">initial_left_speed_rpm</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">acc_time</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">dec_time</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Clear Tx data</span>
+<span class="w">    </span><span class="n">TxData_Clear</span><span class="p">(</span><span class="n">TxData1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">TxData_Clear</span><span class="p">(</span><span class="n">TxData2</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Set Working mode to Speed mode for right motor</span>
+<span class="w">    </span><span class="n">TxData1</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x19</span><span class="p">;</span><span class="w">              </span><span class="c1">// internal address</span>
+<span class="w">    </span><span class="n">TxData1</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x2F</span><span class="p">;</span><span class="w">              </span><span class="c1">// set speed mode value</span>
+<span class="w">    </span><span class="c1">// Set Working mode to Speed mode for left motor</span>
+<span class="w">    </span><span class="n">TxData2</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x19</span><span class="p">;</span><span class="w">              </span><span class="c1">// internal address</span>
+<span class="w">    </span><span class="n">TxData2</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x2F</span><span class="p">;</span><span class="w">              </span><span class="c1">// set speed mode value</span>
+<span class="w">    </span><span class="c1">// Sent command to ZLAC706-CAN motor driver</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">HAL_FDCAN_AddMessageToTxFifoQ</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hfdcan1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">TxHeader1</span><span class="p">,</span><span class="w"> </span><span class="n">TxData1</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">HAL_OK</span><span class="p">)</span><span class="w">     </span><span class="p">{</span><span class="n">Error_Handler</span><span class="p">();}</span><span class="w">      </span><span class="c1">// declare more than 1</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">HAL_FDCAN_AddMessageToTxFifoQ</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hfdcan2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">TxHeader2</span><span class="p">,</span><span class="w"> </span><span class="n">TxData2</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">HAL_OK</span><span class="p">)</span><span class="w">     </span><span class="p">{</span><span class="n">Error_Handler</span><span class="p">();}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Set Acceleration and Deceleration for right motor</span>
+<span class="w">    </span><span class="n">TxData1</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x13</span><span class="p">;</span><span class="w">              </span><span class="c1">// internal address</span>
+<span class="w">    </span><span class="n">TxData1</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">acc_time</span><span class="p">;</span><span class="w">  </span><span class="c1">// set acceleration = acc_time x 100ms</span>
+<span class="w">    </span><span class="n">TxData1</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dec_time</span><span class="p">;</span><span class="w">  </span><span class="c1">// set deceleration = dec_time x 100ms</span>
+<span class="w">    </span><span class="c1">// Set Acceleration and Deceleration for left motor</span>
+<span class="w">    </span><span class="n">TxData2</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x13</span><span class="p">;</span><span class="w">              </span><span class="c1">// internal address</span>
+<span class="w">    </span><span class="n">TxData2</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">acc_time</span><span class="p">;</span><span class="w">  </span><span class="c1">// set acceleration = acc_time x 100ms</span>
+<span class="w">    </span><span class="n">TxData2</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dec_time</span><span class="p">;</span><span class="w">  </span><span class="c1">// set deceleration = dec_time x 100ms</span>
+<span class="w">    </span><span class="c1">// Sent command to ZLAC706-CAN motor driver</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">HAL_FDCAN_AddMessageToTxFifoQ</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hfdcan1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">TxHeader1</span><span class="p">,</span><span class="w"> </span><span class="n">TxData1</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">HAL_OK</span><span class="p">)</span><span class="w">     </span><span class="p">{</span><span class="n">Error_Handler</span><span class="p">();}</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">HAL_FDCAN_AddMessageToTxFifoQ</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hfdcan2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">TxHeader2</span><span class="p">,</span><span class="w"> </span><span class="n">TxData2</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">HAL_OK</span><span class="p">)</span><span class="w">     </span><span class="p">{</span><span class="n">Error_Handler</span><span class="p">();}</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">Motor_Set_TargetSpeed</span><span class="p">(</span><span class="n">initial_right_speed_rpm</span><span class="p">,</span><span class="w"> </span><span class="n">initial_left_speed_rpm</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">BothMotor_Enable</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="n">BothMotor_EmergencyBrake</span><span class="p">();</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Hub motor set target speed: <code class="docutils literal notranslate"><span class="pre">Motor_Set_TargetSpeed(float</span> <span class="pre">right_speed_rpm,</span> <span class="pre">float</span> <span class="pre">left_speed_rpm)</span></code></p></li>
+</ul>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">Motor_Set_TargetSpeed</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">right_speed_rpm</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">left_speed_rpm</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Clear Tx data</span>
+<span class="w">    </span><span class="n">TxData_Clear</span><span class="p">(</span><span class="n">TxData1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">TxData_Clear</span><span class="p">(</span><span class="n">TxData2</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Set Right motor target speed</span>
+<span class="w">    </span><span class="n">TxData1</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x11</span><span class="p">;</span><span class="w">              </span><span class="c1">// internal address</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">set_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">fabs</span><span class="p">(</span><span class="n">right_speed_rpm</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">8192.0</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">3000</span><span class="p">;</span><span class="w">   </span><span class="c1">// calculate 32 bit set value from actual speed</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">right_speed_rpm</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">){</span><span class="w"></span>
+<span class="w">        </span><span class="n">set_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">set_value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// reverse (two complement)</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">set_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">set_value</span><span class="p">;</span><span class="w">      </span><span class="c1">// forward</span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">TxData1</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">set_value</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">24</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">;</span><span class="w">  </span><span class="c1">// set Byte4</span>
+<span class="w">    </span><span class="n">TxData1</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">set_value</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">;</span><span class="w">  </span><span class="c1">// set Byte5</span>
+<span class="w">    </span><span class="n">TxData1</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">set_value</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">;</span><span class="w">   </span><span class="c1">// set Byte6</span>
+<span class="w">    </span><span class="n">TxData1</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">set_value</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">;</span><span class="w">                  </span><span class="c1">// set Byte7</span>
+
+<span class="w">    </span><span class="c1">// Set Left motor target speed</span>
+<span class="w">    </span><span class="n">TxData2</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x11</span><span class="p">;</span><span class="w">              </span><span class="c1">// internal address</span>
+<span class="w">    </span><span class="n">set_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">fabs</span><span class="p">(</span><span class="n">left_speed_rpm</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">8192.0</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">3000</span><span class="p">;</span><span class="w">     </span><span class="c1">// calculate 32 bit set value from actual speed</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">left_speed_rpm</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">){</span><span class="w"></span>
+<span class="w">        </span><span class="n">set_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">set_value</span><span class="p">;</span><span class="w">      </span><span class="c1">// forward</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">set_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">set_value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// reverse (two complement)</span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">TxData2</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">set_value</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">24</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">;</span><span class="w">  </span><span class="c1">// set Byte4</span>
+<span class="w">    </span><span class="n">TxData2</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">set_value</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">;</span><span class="w">  </span><span class="c1">// set Byte5</span>
+<span class="w">    </span><span class="n">TxData2</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">set_value</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">;</span><span class="w">   </span><span class="c1">// set Byte6</span>
+<span class="w">    </span><span class="n">TxData2</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">set_value</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">;</span><span class="w">                  </span><span class="c1">// set Byte7</span>
+
+<span class="w">    </span><span class="c1">// Sent command to ZLAC706-CAN motor driver</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">HAL_FDCAN_AddMessageToTxFifoQ</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hfdcan1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">TxHeader1</span><span class="p">,</span><span class="w"> </span><span class="n">TxData1</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">HAL_OK</span><span class="p">)</span><span class="w">     </span><span class="p">{</span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="n">Error_Handler</span><span class="p">();}</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">HAL_FDCAN_AddMessageToTxFifoQ</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hfdcan2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">TxHeader2</span><span class="p">,</span><span class="w"> </span><span class="n">TxData2</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">HAL_OK</span><span class="p">)</span><span class="w">     </span><span class="p">{</span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">Error_Handler</span><span class="p">();}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Hub motor enable: <code class="docutils literal notranslate"><span class="pre">BothMotor_Enable()</span></code></p></li>
+</ul>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">BothMotor_Enable</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Clear Tx data</span>
+<span class="w">    </span><span class="n">TxData_Clear</span><span class="p">(</span><span class="n">TxData1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">TxData_Clear</span><span class="p">(</span><span class="n">TxData2</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Enable the right motor</span>
+<span class="w">    </span><span class="n">TxData1</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x10</span><span class="p">;</span><span class="w">      </span><span class="c1">// internal address</span>
+<span class="w">    </span><span class="n">TxData1</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x1F</span><span class="p">;</span><span class="w">      </span><span class="c1">// set enable motor value</span>
+<span class="w">    </span><span class="c1">// Enable the left motor</span>
+<span class="w">    </span><span class="n">TxData2</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x10</span><span class="p">;</span><span class="w">      </span><span class="c1">// internal address</span>
+<span class="w">    </span><span class="n">TxData2</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x1F</span><span class="p">;</span><span class="w">      </span><span class="c1">// set enable motor value</span>
+<span class="w">    </span><span class="c1">// Sent command to ZLAC706-CAN motor driver</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">HAL_FDCAN_AddMessageToTxFifoQ</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hfdcan1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">TxHeader1</span><span class="p">,</span><span class="w"> </span><span class="n">TxData1</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">HAL_OK</span><span class="p">)</span><span class="w">     </span><span class="p">{</span><span class="n">Error_Handler</span><span class="p">();}</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">HAL_FDCAN_AddMessageToTxFifoQ</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hfdcan2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">TxHeader2</span><span class="p">,</span><span class="w"> </span><span class="n">TxData2</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">HAL_OK</span><span class="p">)</span><span class="w">     </span><span class="p">{</span><span class="n">Error_Handler</span><span class="p">();}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Hub motor release brake: <code class="docutils literal notranslate"><span class="pre">BothMotor_Release()</span></code></p></li>
+</ul>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">BothMotor_Release</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Clear Tx data</span>
+<span class="w">    </span><span class="n">TxData_Clear</span><span class="p">(</span><span class="n">TxData1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">TxData_Clear</span><span class="p">(</span><span class="n">TxData2</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Release the right motor with down time</span>
+<span class="w">    </span><span class="n">TxData1</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x10</span><span class="p">;</span><span class="w">      </span><span class="c1">// internal address</span>
+<span class="w">    </span><span class="n">TxData1</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x0F</span><span class="p">;</span><span class="w">      </span><span class="c1">// set release motor value</span>
+<span class="w">    </span><span class="c1">// Release the left motor with down time</span>
+<span class="w">    </span><span class="n">TxData2</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x10</span><span class="p">;</span><span class="w">      </span><span class="c1">// internal address</span>
+<span class="w">    </span><span class="n">TxData2</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x0F</span><span class="p">;</span><span class="w">      </span><span class="c1">// set release motor value</span>
+<span class="w">    </span><span class="c1">// Sent command to ZLAC706-CAN motor driver</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">HAL_FDCAN_AddMessageToTxFifoQ</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hfdcan1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">TxHeader1</span><span class="p">,</span><span class="w"> </span><span class="n">TxData1</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">HAL_OK</span><span class="p">)</span><span class="w">     </span><span class="p">{</span><span class="n">Error_Handler</span><span class="p">();}</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">HAL_FDCAN_AddMessageToTxFifoQ</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hfdcan2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">TxHeader2</span><span class="p">,</span><span class="w"> </span><span class="n">TxData2</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">HAL_OK</span><span class="p">)</span><span class="w">     </span><span class="p">{</span><span class="n">Error_Handler</span><span class="p">();}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Hub motor emergency brake: <code class="docutils literal notranslate"><span class="pre">BothMotor_EmergencyBrake()</span></code></p></li>
+</ul>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">BothMotor_EmergencyBrake</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Clear Tx data</span>
+<span class="w">    </span><span class="n">TxData_Clear</span><span class="p">(</span><span class="n">TxData1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">TxData_Clear</span><span class="p">(</span><span class="n">TxData2</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Emergency stop the right motor</span>
+<span class="w">    </span><span class="n">TxData1</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x30</span><span class="p">;</span><span class="w">      </span><span class="c1">// internal address</span>
+<span class="w">    </span><span class="n">TxData1</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x1F</span><span class="p">;</span><span class="w">      </span><span class="c1">// set emergency stop value</span>
+<span class="w">    </span><span class="c1">// Emergency stop the left motor</span>
+<span class="w">    </span><span class="n">TxData2</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x30</span><span class="p">;</span><span class="w">      </span><span class="c1">// internal address</span>
+<span class="w">    </span><span class="n">TxData2</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x1F</span><span class="p">;</span><span class="w">      </span><span class="c1">// set emergency stop value</span>
+<span class="w">    </span><span class="c1">// Sent command to ZLAC706-CAN motor driver</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">HAL_FDCAN_AddMessageToTxFifoQ</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hfdcan1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">TxHeader1</span><span class="p">,</span><span class="w"> </span><span class="n">TxData1</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">HAL_OK</span><span class="p">)</span><span class="w">     </span><span class="p">{</span><span class="n">Error_Handler</span><span class="p">();}</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">HAL_FDCAN_AddMessageToTxFifoQ</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hfdcan2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">TxHeader2</span><span class="p">,</span><span class="w"> </span><span class="n">TxData2</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">HAL_OK</span><span class="p">)</span><span class="w">     </span><span class="p">{</span><span class="n">Error_Handler</span><span class="p">();}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Hub motor read current: <code class="docutils literal notranslate"><span class="pre">BothMotor_Get_Current()</span></code></p></li>
+</ul>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">BothMotor_Get_Current</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Clear Tx data</span>
+<span class="w">    </span><span class="n">TxData_Clear</span><span class="p">(</span><span class="n">TxData1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">TxData_Clear</span><span class="p">(</span><span class="n">TxData2</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Get right motor current</span>
+<span class="w">    </span><span class="n">TxData1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xDC</span><span class="p">;</span><span class="w">      </span><span class="c1">// set tx read command</span>
+<span class="w">    </span><span class="n">TxData1</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xE2</span><span class="p">;</span><span class="w">      </span><span class="c1">// internal address</span>
+<span class="w">    </span><span class="c1">// Get left motor current</span>
+<span class="w">    </span><span class="n">TxData2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xDC</span><span class="p">;</span><span class="w">      </span><span class="c1">// set tx read command</span>
+<span class="w">    </span><span class="n">TxData2</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xE2</span><span class="p">;</span><span class="w">      </span><span class="c1">// internal address</span>
+<span class="w">    </span><span class="c1">// Sent command to ZLAC706-CAN motor driver</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">HAL_FDCAN_AddMessageToTxFifoQ</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hfdcan1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">TxHeader1</span><span class="p">,</span><span class="w"> </span><span class="n">TxData1</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">HAL_OK</span><span class="p">)</span><span class="w">     </span><span class="p">{</span><span class="n">Error_Handler</span><span class="p">();}</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">HAL_FDCAN_AddMessageToTxFifoQ</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hfdcan2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">TxHeader2</span><span class="p">,</span><span class="w"> </span><span class="n">TxData2</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">HAL_OK</span><span class="p">)</span><span class="w">     </span><span class="p">{</span><span class="n">Error_Handler</span><span class="p">();}</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Wait until tx message is received at the rx</span>
+<span class="w">    </span><span class="n">TxWriteMsg1_isReturn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">TxWriteMsg2_isReturn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">timeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">micros</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">TxWriteMsg1_isReturn</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">TxWriteMsg2_isReturn</span><span class="p">)){</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// 1 ms request timeout</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">micros</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">timeout</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1000</span><span class="p">){</span><span class="w"></span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Hub motor read speed: <code class="docutils literal notranslate"><span class="pre">BothMotor_Get_Speed()</span></code></p></li>
+</ul>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">BothMotor_Get_Speed</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Clear Tx data</span>
+<span class="w">    </span><span class="n">TxData_Clear</span><span class="p">(</span><span class="n">TxData1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">TxData_Clear</span><span class="p">(</span><span class="n">TxData2</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Get right motor speed</span>
+<span class="w">    </span><span class="n">TxData1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xDC</span><span class="p">;</span><span class="w">      </span><span class="c1">// set tx read command</span>
+<span class="w">    </span><span class="n">TxData1</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xE4</span><span class="p">;</span><span class="w">      </span><span class="c1">// internal address</span>
+<span class="w">    </span><span class="c1">// Get left motor speed</span>
+<span class="w">    </span><span class="n">TxData2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xDC</span><span class="p">;</span><span class="w">      </span><span class="c1">// set tx read command</span>
+<span class="w">    </span><span class="n">TxData2</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xE4</span><span class="p">;</span><span class="w">      </span><span class="c1">// internal address</span>
+<span class="w">    </span><span class="c1">// Sent command to ZLAC706-CAN motor driver</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">HAL_FDCAN_AddMessageToTxFifoQ</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hfdcan1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">TxHeader1</span><span class="p">,</span><span class="w"> </span><span class="n">TxData1</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">HAL_OK</span><span class="p">)</span><span class="w">     </span><span class="p">{</span><span class="n">Error_Handler</span><span class="p">();}</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">HAL_FDCAN_AddMessageToTxFifoQ</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hfdcan2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">TxHeader2</span><span class="p">,</span><span class="w"> </span><span class="n">TxData2</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">HAL_OK</span><span class="p">)</span><span class="w">     </span><span class="p">{</span><span class="n">Error_Handler</span><span class="p">();}</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Wait until tx message is received at the rx</span>
+<span class="w">    </span><span class="n">TxWriteMsg1_isReturn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">TxWriteMsg2_isReturn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">timeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">micros</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">TxWriteMsg1_isReturn</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">TxWriteMsg2_isReturn</span><span class="p">)){</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// 1 ms request timeout</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">micros</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">timeout</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1000</span><span class="p">){</span><span class="w"></span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Hub motor read position: <code class="docutils literal notranslate"><span class="pre">BothMotor_Get_Position()</span></code></p></li>
+</ul>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">BothMotor_Get_Position</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Clear Tx data</span>
+<span class="w">    </span><span class="n">TxData_Clear</span><span class="p">(</span><span class="n">TxData1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">TxData_Clear</span><span class="p">(</span><span class="n">TxData2</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Get right motor pulse</span>
+<span class="w">    </span><span class="n">TxData1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xDC</span><span class="p">;</span><span class="w">      </span><span class="c1">// set tx read command</span>
+<span class="w">    </span><span class="n">TxData1</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xE8</span><span class="p">;</span><span class="w">      </span><span class="c1">// internal address</span>
+<span class="w">    </span><span class="c1">// Get left motor pulse</span>
+<span class="w">    </span><span class="n">TxData2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xDC</span><span class="p">;</span><span class="w">      </span><span class="c1">// set tx read command</span>
+<span class="w">    </span><span class="n">TxData2</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xE8</span><span class="p">;</span><span class="w">      </span><span class="c1">// internal address</span>
+<span class="w">    </span><span class="c1">// Sent command to ZLAC706-CAN motor driver</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">HAL_FDCAN_AddMessageToTxFifoQ</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hfdcan1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">TxHeader1</span><span class="p">,</span><span class="w"> </span><span class="n">TxData1</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">HAL_OK</span><span class="p">)</span><span class="w">     </span><span class="p">{</span><span class="n">Error_Handler</span><span class="p">();}</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">HAL_FDCAN_AddMessageToTxFifoQ</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hfdcan2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">TxHeader2</span><span class="p">,</span><span class="w"> </span><span class="n">TxData2</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">HAL_OK</span><span class="p">)</span><span class="w">     </span><span class="p">{</span><span class="n">Error_Handler</span><span class="p">();}</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Wait until tx message is received at the rx</span>
+<span class="w">    </span><span class="n">TxWriteMsg1_isReturn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">TxWriteMsg2_isReturn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">timeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">micros</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">TxWriteMsg1_isReturn</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">TxWriteMsg2_isReturn</span><span class="p">)){</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// 1 ms request timeout</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">micros</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">timeout</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1000</span><span class="p">){</span><span class="w"></span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="runtime-test">
+<h2>Runtime Test<a class="headerlink" href="#runtime-test" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Motor Set Speed Mode</p></li>
+</ul>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">runstarttime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">micros</span><span class="p">();</span><span class="w"></span>
+<span class="c1">//************************************</span>
+<span class="n">BothMotor_Set_SpeedMode</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="c1">//************************************</span>
+<span class="n">runtime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">micros</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">runstarttime</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Runtime: 0.092 ms</p>
+<ul class="simple">
+<li><p>Motor Read Position &amp; Speed</p></li>
+</ul>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">runstarttime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">micros</span><span class="p">();</span><span class="w"></span>
+<span class="c1">//***********************************************</span>
+<span class="n">BothMotor_Get_Position</span><span class="p">();</span><span class="w"></span>
+<span class="n">BothMotor_Get_Speed</span><span class="p">();</span><span class="w"></span>
+<span class="c1">//***********************************************</span>
+<span class="n">runtime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">micros</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">runstarttime</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Runtime: 1.135 - 1.226 ms</p>
+<ul class="simple">
+<li><p>Motor Set Target Speed</p></li>
+</ul>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">runstarttime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">micros</span><span class="p">();</span><span class="w"></span>
+<span class="c1">//*********************************************************</span>
+<span class="n">Motor_Set_TargetSpeed</span><span class="p">(</span><span class="n">RightMotor_CmdVel</span><span class="p">,</span><span class="w"> </span><span class="n">LeftMotor_CmdVel</span><span class="p">);</span><span class="w"></span>
+<span class="c1">//*********************************************************</span>
+<span class="n">runtime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">micros</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">runstarttime</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Runtime: 0.022 ms</p>
+</div>
 </div>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../index.html" class="btn btn-neutral float-left" title="MBSE-2022-1/Firmware-Team Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="imu-sensor.html" class="btn btn-neutral float-left" title="IMU Sensor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="imu-interface.html" class="btn btn-neutral float-right" title="IMU Interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

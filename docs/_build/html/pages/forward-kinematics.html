@@ -38,15 +38,40 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Microcontroller System:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Hardwares and Connection:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="microcontroller.html">Microcontroller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hub-motor-and-driver.html">Hub Motor and Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imu-sensor.html">IMU Sensor</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Microcontroller Subsystem:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="hub-motor-interface.html">Hub Motor Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="imu-interface.html">IMU Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wheel-velocity-estimation.html">Wheel Velocity Estimation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Forward Kinematics</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Forward Kinematics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#forward-velocity-kinematics">Forward Velocity Kinematics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#covariance-matrix-of-2d-twist">Covariance Matrix of 2D-Twist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#implemention-core-m7">Implemention (Core M7)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#runtime-test">Runtime Test</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="inverse-kinematics.html">Inverse Kinematics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wheel-odometry-computation.html">Wheel Odometry Computation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ros2-interface.html">ROS2 Interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">ROS2:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ros2-setup.html">ROS2 Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xicro-package.html">Xicro Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="calibration-package.html">Calibration Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="step-to-open.html">Steps to open ROS2 nodes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Test and Evaluation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="process-timing.html">Process Timing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wheel-odometry.html">Wheel Odometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="summary.html">Firmware Summary</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
@@ -86,6 +111,35 @@
              
   <div class="section" id="forward-kinematics">
 <h1>Forward Kinematics<a class="headerlink" href="#forward-kinematics" title="Permalink to this heading"></a></h1>
+<div class="section" id="forward-velocity-kinematics">
+<h2>Forward Velocity Kinematics<a class="headerlink" href="#forward-velocity-kinematics" title="Permalink to this heading"></a></h2>
+<a class="reference internal image-reference" href="../_images/forward_kinematics.png"><img alt="../_images/forward_kinematics.png" class="align-center" src="../_images/forward_kinematics.png" style="width: 495px; height: 505px;" /></a>
+</div>
+<div class="section" id="covariance-matrix-of-2d-twist">
+<h2>Covariance Matrix of 2D-Twist<a class="headerlink" href="#covariance-matrix-of-2d-twist" title="Permalink to this heading"></a></h2>
+<a class="reference internal image-reference" href="../_images/twist_covariance.png"><img alt="../_images/twist_covariance.png" class="align-center" src="../_images/twist_covariance.png" style="width: 440px; height: 493px;" /></a>
+</div>
+<div class="section" id="implemention-core-m7">
+<h2>Implemention (Core M7)<a class="headerlink" href="#implemention-core-m7" title="Permalink to this heading"></a></h2>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">ForwardKinematic</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">right_linvel</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">left_linvel</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">wheel_distance</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">Robot_LinVel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">right_linvel</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">left_linvel</span><span class="p">)</span><span class="o">*</span><span class="mf">0.5</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">Robot_AngVel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">right_linvel</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">left_linvel</span><span class="p">)</span><span class="o">/</span><span class="n">wheel_distance</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="runtime-test">
+<h2>Runtime Test<a class="headerlink" href="#runtime-test" title="Permalink to this heading"></a></h2>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">runstarttime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">micros</span><span class="p">();</span><span class="w"></span>
+<span class="c1">//***************************************************************</span>
+<span class="n">ForwardKinematic</span><span class="p">(</span><span class="n">estimated_rightvel</span><span class="p">,</span><span class="w"> </span><span class="n">estimated_leftvel</span><span class="p">,</span><span class="w"> </span><span class="mf">0.39377</span><span class="p">);</span><span class="w"></span>
+<span class="c1">//***************************************************************</span>
+<span class="n">runtime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">micros</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">runstarttime</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Runtime: 0.003 ms</p>
+</div>
 </div>
 
 

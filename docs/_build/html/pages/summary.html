@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Firmware Summary &mdash; MBSE-2022-1/Firmware-Team 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Process Timing" href="process-timing.html" />
+    <link rel="prev" title="Control Algorithms" href="control-algorithm.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> MBSE-2022-1/Firmware-Team
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Hardwares and Connection:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="microcontroller.html">Microcontroller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hub-motor-and-driver.html">Hub Motor and Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imu-sensor.html">IMU Sensor</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Microcontroller Subsystem:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="hub-motor-interface.html">Hub Motor Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imu-interface.html">IMU Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wheel-velocity-estimation.html">Wheel Velocity Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forward-kinematics.html">Forward Kinematics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inverse-kinematics.html">Inverse Kinematics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wheel-odometry-computation.html">Wheel Odometry Computation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ros2-interface.html">ROS2 Interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">ROS2:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ros2-setup.html">ROS2 Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xicro-package.html">Xicro Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="calibration-package.html">Calibration Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="step-to-open.html">Steps to open ROS2 nodes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Gripper:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="hardware-gripper.html">Hardware Gripper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="control-algorithm.html">Control Algorithms</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Firmware Summary</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#problems-and-solutions">Problems and Solutions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hub-motor-interface">Hub Motor Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imu-interface">IMU Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wheel-velocity-estimation">Wheel Velocity Estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#microcontroller-ros2-interface">Microcontroller-ROS2 Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gripper">Gripper</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#suggestion-for-future-development">Suggestion for Future Development</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Hub Motor Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wheel-odometry">Wheel Odometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Gripper</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Test and Evaluation:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="process-timing.html">Process Timing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wheel-odometry.html">Wheel Odometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gripper-experiment.html">Gripper</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Firmware Summary</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#problems-and-solutions">Problems and Solutions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hub-motor-interface">Hub Motor Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imu-interface">IMU Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wheel-velocity-estimation">Wheel Velocity Estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#microcontroller-ros2-interface">Microcontroller-ROS2 Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gripper">Gripper</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#suggestion-for-future-development">Suggestion for Future Development</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Hub Motor Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wheel-odometry">Wheel Odometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Gripper</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dummy1.html">Dummy 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manipulator-firmware.html">Manipulator Firmware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mobile-robot-firmware.html">Mobile Robot Firmware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">File:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="hardware-uses.html">Hardware Uses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hardware-references.html">Hardware References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MBSE-2022-1/Firmware-Team</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Firmware Summary</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/pages/summary.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="firmware-summary">
+<h1>Firmware Summary<a class="headerlink" href="#firmware-summary" title="Permalink to this heading"></a></h1>
+<div class="section" id="problems-and-solutions">
+<h2>Problems and Solutions<a class="headerlink" href="#problems-and-solutions" title="Permalink to this heading"></a></h2>
+<div class="section" id="hub-motor-interface">
+<h3>Hub Motor Interface<a class="headerlink" href="#hub-motor-interface" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Since the current hub motor driver circuit is not implemented in the PCB, the CAN bus is easily affected by interference. As a result, it was not possible to transmit data at 1 MHz, so it was reduced to 500 kHz</p></li>
+<li><p>The speed reading from the motor can be write and read with a resolution of only 0.36621 rpm/bit, resulting in the speed commanded to the motor and the obtained value to be within ±0.36621 rpm, which is a large value in the 0 - 15 rpm operating range</p></li>
+<li><p>Reading position and speed values ​​from a polling function has the chance to cause the MCU to get stuck in an infinite loop, so it has to write a timeout when the called value does not return</p></li>
+<li><p>When the robot ramps up, it causes the driver to display a red fault indicator on the driver and causes all motor operations to be suspended</p></li>
+</ul>
+</div>
+<div class="section" id="imu-interface">
+<h3>IMU Interface<a class="headerlink" href="#imu-interface" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>When reading the value of the IMU for less than 1 minute, the IMU will not be able to send data back to the board, and the runtime will increase from 7 ms to 200 ms. This will cause the board to freeze and cause other processes to fail as well. Causing the need to replace the IMU</p></li>
+</ul>
+</div>
+<div class="section" id="wheel-velocity-estimation">
+<h3>Wheel Velocity Estimation<a class="headerlink" href="#wheel-velocity-estimation" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Position were used to estimate the speed of each wheel since the resolution was 0.0878 degree/pulse. However, because the estimated speed was much less than the speed commanded to the motor, cutting position off temporary is needed</p></li>
+</ul>
+</div>
+<div class="section" id="microcontroller-ros2-interface">
+<h3>Microcontroller-ROS2 Interface<a class="headerlink" href="#microcontroller-ros2-interface" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Since the standard ROS2 messages nav_msgs/Odometry, sensor_msgs/Imu, and geometry_msgs/Twist are very large messages, both in variable bit size and in the number of data in the array, result in the maximum transmission frequency of 10 Hz. Creating a custom message in xicro interfaces includes xicro_interfaces/Odometry, xicro_interfaces/Imu and xicro_interfaces/DiffDriveTwist To extract only the information necessary for the mobile robot and to remove the constant covariance matrix from all messages, it is possible to send information up to ROS2 at a frequency of 100 Hz</p></li>
+</ul>
+</div>
+<div class="section" id="gripper">
+<h3>Gripper<a class="headerlink" href="#gripper" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>A gripper has a problem in the mechanical part, the gripper goes to the wrong position according to the experiment ‘Testing an appropriate force with other object’. Therefore a present load from DYNAMIXEL may change after a mechanical part has been fixed</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="suggestion-for-future-development">
+<h2>Suggestion for Future Development<a class="headerlink" href="#suggestion-for-future-development" title="Permalink to this heading"></a></h2>
+<div class="section" id="id1">
+<h3>Hub Motor Interface<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>If the runtime of reading from the motor is required to be less than before The hub motor driver circuit can be improved to withstand more noise by making a PCB and using a shield cable to support transmission with a frequency of 1 MHz instead of 500 kHz</p></li>
+<li><p>Write a function for fault diagnosis when Overload, Under-voltage, Over-voltage, Encoder falling, Over-current, Overheat from Heart-beat message occur and handle appropriately</p></li>
+<li><p>Maybe change motor driver</p></li>
+</ul>
+</div>
+<div class="section" id="wheel-odometry">
+<h3>Wheel Odometry<a class="headerlink" href="#wheel-odometry" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>For a more accurate estimation of the robot’s position, the Wheel velocity estimation can be improved by changing the Q, R matrices to achieve a more actual velocity. Or may consider returning to use the position value together as well</p></li>
+<li><p>Wheel odometry equation may be improved.</p></li>
+<li><p>Conduct an experiment to find a pose covariance matrix</p></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h3>Gripper<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>After fixing in the mechanical part, all of the experiments will have to be retaken for checking a change of present load</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="control-algorithm.html" class="btn btn-neutral float-left" title="Control Algorithms" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="process-timing.html" class="btn btn-neutral float-right" title="Process Timing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, VeroAlfa.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

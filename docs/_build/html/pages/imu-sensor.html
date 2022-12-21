@@ -42,7 +42,10 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="microcontroller.html">Microcontroller</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hub-motor-and-driver.html">Hub Motor and Driver</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">IMU Sensor</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">IMU Sensor</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#bno055">BNO055</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Microcontroller Subsystem:</span></p>
 <ul>
@@ -53,6 +56,13 @@
 <li class="toctree-l1"><a class="reference internal" href="inverse-kinematics.html">Inverse Kinematics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wheel-odometry-computation.html">Wheel Odometry Computation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ros2-interface.html">ROS2 Interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">ROS2:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ros2-setup.html">ROS2 Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xicro-package.html">Xicro Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="calibration-package.html">Calibration Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="step-to-open.html">Steps to open ROS2 nodes</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
@@ -92,6 +102,62 @@
              
   <div class="section" id="imu-sensor">
 <h1>IMU Sensor<a class="headerlink" href="#imu-sensor" title="Permalink to this heading"></a></h1>
+<p>In the process of mobile robot localization, we need current inertial measurement of robot like linear acceleration,
+angular velocty and orientation. The sensor that we’re using is BNO055 Absolute Orientation Sensor.</p>
+<div class="section" id="bno055">
+<h2>BNO055<a class="headerlink" href="#bno055" title="Permalink to this heading"></a></h2>
+<img alt="../_images/bno055.jpg" src="../_images/bno055.jpg" />
+<p>This is 9-DOF sensor including an accelerometer, gyroscope and magnetometer that has its own processor to perform
+sensor fusion algorithms. They blends accelerometer, magnetometer and gyroscope data into stable three-axis orientation
+output.</p>
+<p>The BNO055 can output the following sensor data:</p>
+<ul class="simple">
+<li><p><strong>Absolute Orientation</strong> (Euler Vector, 100Hz)</p>
+<ul>
+<li><p>Three axis orientation data based on a 360° sphere</p></li>
+</ul>
+</li>
+<li><p><strong>Absolute Orientation</strong> (Quaterion, 100Hz)</p>
+<ul>
+<li><p>Four point quaternion output for more accurate data manipulation</p></li>
+</ul>
+</li>
+<li><p><strong>Angular Velocity Vector</strong> (100Hz)</p>
+<ul>
+<li><p>Three axis of ‘rotation speed’ in rad/s</p></li>
+</ul>
+</li>
+<li><p><strong>Acceleration Vector</strong> (100Hz)</p>
+<ul>
+<li><p>Three axis of acceleration (gravity + linear motion) in m/s^2</p></li>
+</ul>
+</li>
+<li><p><strong>Magnetic Field Strength Vector</strong> (20Hz)</p>
+<ul>
+<li><p>Three axis of magnetic field sensing in micro Tesla (uT)</p></li>
+</ul>
+</li>
+<li><p><strong>Linear Acceleration Vector</strong> (100Hz)</p>
+<ul>
+<li><p>Three axis of linear acceleration data (acceleration minus gravity) in m/s^2</p></li>
+</ul>
+</li>
+<li><p><strong>Gravity Vector</strong> (100Hz)</p>
+<ul>
+<li><p>Three axis of gravitational acceleration (minus any movement) in m/s^2</p></li>
+</ul>
+</li>
+<li><p><strong>Temperature</strong> (1Hz)</p>
+<ul>
+<li><p>Ambient temperature in degrees celsius</p></li>
+</ul>
+</li>
+</ul>
+<div class="line-block">
+<div class="line"><strong>References:</strong></div>
+<div class="line">[1] <a class="reference external" href="https://learn.adafruit.com/adafruit-bno055-absolute-orientation-sensor/overview">https://learn.adafruit.com/adafruit-bno055-absolute-orientation-sensor/overview</a></div>
+</div>
+</div>
 </div>
 
 

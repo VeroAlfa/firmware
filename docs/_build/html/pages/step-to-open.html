@@ -59,7 +59,13 @@
 <li class="toctree-l1"><a class="reference internal" href="ros2-setup.html">ROS2 Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="xicro-package.html">Xicro Package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="calibration-package.html">Calibration Package</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Steps to open ROS2 nodes</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Steps to open ROS2 nodes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#open-xicro-node">Open Xicro node</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#open-calibration-node">Open Calibration node</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#open-navigation-message-publisher-node">Open Navigation message publisher node</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#open-teleop-twist-keyboard-node">Open Teleop twist keyboard node</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
@@ -99,6 +105,31 @@
              
   <div class="section" id="steps-to-open-ros2-nodes">
 <h1>Steps to open ROS2 nodes<a class="headerlink" href="#steps-to-open-ros2-nodes" title="Permalink to this heading"></a></h1>
+<div class="section" id="open-xicro-node">
+<h2>Open Xicro node<a class="headerlink" href="#open-xicro-node" title="Permalink to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ros2</span> <span class="n">run</span> <span class="n">xicro_pkg</span> <span class="n">xicro_node_sub_N_pub_ID_3_stm32</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="open-calibration-node">
+<h2>Open Calibration node<a class="headerlink" href="#open-calibration-node" title="Permalink to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ros2</span> <span class="n">run</span> <span class="n">calibration</span> <span class="n">calibration_node</span><span class="o">.</span><span class="n">py</span>
+<span class="n">ros2</span> <span class="n">action</span> <span class="n">send_goal</span> <span class="o">/</span><span class="n">calibrate</span> <span class="n">calibration_interfaces</span><span class="o">/</span><span class="n">action</span><span class="o">/</span><span class="n">Calibrate</span> <span class="s2">&quot;num: 500&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="open-navigation-message-publisher-node">
+<h2>Open Navigation message publisher node<a class="headerlink" href="#open-navigation-message-publisher-node" title="Permalink to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ros2</span> <span class="n">run</span> <span class="n">xicro_pkg</span> <span class="n">nav_msg_publisher</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="open-teleop-twist-keyboard-node">
+<h2>Open Teleop twist keyboard node<a class="headerlink" href="#open-teleop-twist-keyboard-node" title="Permalink to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ros2</span> <span class="n">run</span> <span class="n">teleop_twist_keyboard</span> <span class="n">teleop_twist_keyboard</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 

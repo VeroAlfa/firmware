@@ -38,15 +38,39 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Microcontroller System:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Hardwares and Connection:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="microcontroller.html">Microcontroller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hub-motor-and-driver.html">Hub Motor and Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imu-sensor.html">IMU Sensor</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Microcontroller Subsystem:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="hub-motor-interface.html">Hub Motor Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="imu-interface.html">IMU Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wheel-velocity-estimation.html">Wheel Velocity Estimation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="forward-kinematics.html">Forward Kinematics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="inverse-kinematics.html">Inverse Kinematics</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Wheel Odometry Computation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Wheel Odometry Computation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#odometry-update">Odometry Update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#implemention-core-m7">Implemention (Core M7)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#runtime-test">Runtime Test</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="ros2-interface.html">ROS2 Interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">ROS2:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ros2-setup.html">ROS2 Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xicro-package.html">Xicro Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="calibration-package.html">Calibration Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="step-to-open.html">Steps to open ROS2 nodes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Test and Evaluation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="process-timing.html">Process Timing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wheel-odometry.html">Wheel Odometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="summary.html">Firmware Summary</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
@@ -86,6 +110,35 @@
              
   <div class="section" id="wheel-odometry-computation">
 <h1>Wheel Odometry Computation<a class="headerlink" href="#wheel-odometry-computation" title="Permalink to this heading"></a></h1>
+<div class="section" id="odometry-update">
+<h2>Odometry Update<a class="headerlink" href="#odometry-update" title="Permalink to this heading"></a></h2>
+<a class="reference internal image-reference" href="../_images/odomframe.png"><img alt="../_images/odomframe.png" class="align-center" src="../_images/odomframe.png" style="width: 366px; height: 336px;" /></a>
+<a class="reference internal image-reference" href="../_images/wheel_odometry.png"><img alt="../_images/wheel_odometry.png" class="align-center" src="../_images/wheel_odometry.png" style="width: 516px; height: 263px;" /></a>
+<img alt="../_images/odometry_matrix.png" class="align-center" src="../_images/odometry_matrix.png" />
+</div>
+<div class="section" id="implemention-core-m7">
+<h2>Implemention (Core M7)<a class="headerlink" href="#implemention-core-m7" title="Permalink to this heading"></a></h2>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">WheelOdometry</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">linear_velocity</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">angular_velocity</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">time_step</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">temp_tetra</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Robot_Yaw</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">angular_velocity</span><span class="o">*</span><span class="n">time_step</span><span class="o">*</span><span class="mf">0.5</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">Robot_X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Robot_X</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">cos</span><span class="p">(</span><span class="n">temp_tetra</span><span class="p">)</span><span class="o">*</span><span class="n">linear_velocity</span><span class="o">*</span><span class="n">time_step</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">Robot_Y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Robot_Y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">sin</span><span class="p">(</span><span class="n">temp_tetra</span><span class="p">)</span><span class="o">*</span><span class="n">linear_velocity</span><span class="o">*</span><span class="n">time_step</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">Robot_Yaw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Robot_Yaw</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">angular_velocity</span><span class="o">*</span><span class="n">time_step</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="runtime-test">
+<h2>Runtime Test<a class="headerlink" href="#runtime-test" title="Permalink to this heading"></a></h2>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">runstarttime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">micros</span><span class="p">();</span><span class="w"></span>
+<span class="c1">//**************************************************</span>
+<span class="n">WheelOdometry</span><span class="p">(</span><span class="n">Robot_LinVel</span><span class="p">,</span><span class="w"> </span><span class="n">Robot_AngVel</span><span class="p">,</span><span class="w"> </span><span class="n">timestep</span><span class="p">);</span><span class="w"></span>
+<span class="c1">//**************************************************</span>
+<span class="n">runtime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">micros</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">runstarttime</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Runtime: 0.006 ms</p>
+</div>
 </div>
 
 

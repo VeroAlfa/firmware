@@ -38,15 +38,42 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Microcontroller System:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Hardwares and Connection:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="microcontroller.html">Microcontroller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hub-motor-and-driver.html">Hub Motor and Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imu-sensor.html">IMU Sensor</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Microcontroller Subsystem:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="hub-motor-interface.html">Hub Motor Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="imu-interface.html">IMU Interface</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Wheel Velocity Estimation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Wheel Velocity Estimation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#kalman-filter-algorithms">Kalman Filter Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#kinematics-base-model">Kinematics Base Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#matrix-summary">Matrix Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#kalman-output">Kalman Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#implemention-core-m7">Implemention (Core M7)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#runtime-test">Runtime Test</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="forward-kinematics.html">Forward Kinematics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="inverse-kinematics.html">Inverse Kinematics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wheel-odometry-computation.html">Wheel Odometry Computation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ros2-interface.html">ROS2 Interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">ROS2:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ros2-setup.html">ROS2 Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xicro-package.html">Xicro Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="calibration-package.html">Calibration Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="step-to-open.html">Steps to open ROS2 nodes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Test and Evaluation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="process-timing.html">Process Timing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wheel-odometry.html">Wheel Odometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="summary.html">Firmware Summary</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
@@ -86,6 +113,81 @@
              
   <div class="section" id="wheel-velocity-estimation">
 <h1>Wheel Velocity Estimation<a class="headerlink" href="#wheel-velocity-estimation" title="Permalink to this heading"></a></h1>
+<div class="section" id="kalman-filter-algorithms">
+<h2>Kalman Filter Algorithms<a class="headerlink" href="#kalman-filter-algorithms" title="Permalink to this heading"></a></h2>
+<img alt="../_images/kalman.png" class="align-center" src="../_images/kalman.png" />
+</div>
+<div class="section" id="kinematics-base-model">
+<h2>Kinematics Base Model<a class="headerlink" href="#kinematics-base-model" title="Permalink to this heading"></a></h2>
+<p>Assumption: Zero mean gaussian jerk</p>
+<a class="reference internal image-reference" href="../_images/zeromeangaussian.png"><img alt="../_images/zeromeangaussian.png" class="align-center" src="../_images/zeromeangaussian.png" style="width: 578px; height: 173px;" /></a>
+<a class="reference internal image-reference" href="../_images/kalman_states.png"><img alt="../_images/kalman_states.png" class="align-center" src="../_images/kalman_states.png" style="width: 434px; height: 195px;" /></a>
+<img alt="../_images/kalman_process.png" class="align-center" src="../_images/kalman_process.png" />
+<a class="reference internal image-reference" href="../_images/kalman_A.png"><img alt="../_images/kalman_A.png" class="align-center" src="../_images/kalman_A.png" style="width: 457px; height: 124px;" /></a>
+<a class="reference internal image-reference" href="../_images/kalman_B.png"><img alt="../_images/kalman_B.png" class="align-center" src="../_images/kalman_B.png" style="width: 340px; height: 102px;" /></a>
+<a class="reference internal image-reference" href="../_images/kalman_UG.png"><img alt="../_images/kalman_UG.png" class="align-center" src="../_images/kalman_UG.png" style="width: 236px; height: 129px;" /></a>
+<a class="reference internal image-reference" href="../_images/kalman_sensor.png"><img alt="../_images/kalman_sensor.png" class="align-center" src="../_images/kalman_sensor.png" style="width: 620px; height: 128px;" /></a>
+<a class="reference internal image-reference" href="../_images/kalman_C.png"><img alt="../_images/kalman_C.png" class="align-center" src="../_images/kalman_C.png" style="width: 382px; height: 67px;" /></a>
+<img alt="../_images/kalman_QR.png" class="align-center" src="../_images/kalman_QR.png" />
+</div>
+<div class="section" id="matrix-summary">
+<h2>Matrix Summary<a class="headerlink" href="#matrix-summary" title="Permalink to this heading"></a></h2>
+<a class="reference internal image-reference" href="../_images/kalman_summary.png"><img alt="../_images/kalman_summary.png" class="align-center" src="../_images/kalman_summary.png" style="width: 521px; height: 461px;" /></a>
+</div>
+<div class="section" id="kalman-output">
+<h2>Kalman Output<a class="headerlink" href="#kalman-output" title="Permalink to this heading"></a></h2>
+<a class="reference internal image-reference" href="../_images/kalman_output.png"><img alt="../_images/kalman_output.png" class="align-center" src="../_images/kalman_output.png" style="width: 588px; height: 444px;" /></a>
+</div>
+<div class="section" id="implemention-core-m7">
+<h2>Implemention (Core M7)<a class="headerlink" href="#implemention-core-m7" title="Permalink to this heading"></a></h2>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">Predict_RightWheel</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">X_R</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="o">*</span><span class="n">X_R</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">B</span><span class="o">*</span><span class="n">U</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">P_R</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="o">*</span><span class="n">P_R</span><span class="o">*</span><span class="p">(</span><span class="n">A</span><span class="p">.</span><span class="n">transpose</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">G</span><span class="o">*</span><span class="n">Q_R</span><span class="o">*</span><span class="p">(</span><span class="n">G</span><span class="p">.</span><span class="n">transpose</span><span class="p">());</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="kt">float</span><span class="w"> </span><span class="nf">UserCodeUpdateRightWheel</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">position</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">velocity</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">Predict_RightWheel</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="n">Y_R</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">position</span><span class="p">;</span><span class="w">    </span><span class="c1">// assign value of encoder</span>
+<span class="w">    </span><span class="n">Y_R</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">velocity</span><span class="p">;</span><span class="w">    </span><span class="c1">// assign value of encoder</span>
+<span class="w">    </span><span class="n">K_R</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">P_R</span><span class="o">*</span><span class="p">(</span><span class="n">C</span><span class="p">.</span><span class="n">transpose</span><span class="p">())</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">C</span><span class="o">*</span><span class="n">P_R</span><span class="o">*</span><span class="p">(</span><span class="n">C</span><span class="p">.</span><span class="n">transpose</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">R_R</span><span class="p">).</span><span class="n">inverse</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="n">X_R</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">X_R</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">K_R</span><span class="o">*</span><span class="p">(</span><span class="n">Y_R</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">C</span><span class="o">*</span><span class="n">X_R</span><span class="p">);</span><span class="w">  </span><span class="c1">// get new X(estimated state)</span>
+<span class="w">    </span><span class="n">P_R</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">MatrixXf</span><span class="o">::</span><span class="n">Identity</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">K_R</span><span class="o">*</span><span class="n">C</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">P_R</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">X_R</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span><span class="w">        </span><span class="c1">// get estimated velocity</span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">Predict_LeftWheel</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">X_L</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="o">*</span><span class="n">X_L</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">B</span><span class="o">*</span><span class="n">U</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">P_L</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="o">*</span><span class="n">P_L</span><span class="o">*</span><span class="p">(</span><span class="n">A</span><span class="p">.</span><span class="n">transpose</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">G</span><span class="o">*</span><span class="n">Q_L</span><span class="o">*</span><span class="p">(</span><span class="n">G</span><span class="p">.</span><span class="n">transpose</span><span class="p">());</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="kt">float</span><span class="w"> </span><span class="nf">UserCodeUpdateLeftWheel</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">position</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">velocity</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">Predict_LeftWheel</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="n">Y_L</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">position</span><span class="p">;</span><span class="w">    </span><span class="c1">// assign value of encoder</span>
+<span class="w">    </span><span class="n">Y_L</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">velocity</span><span class="p">;</span><span class="w">    </span><span class="c1">// assign value of encoder</span>
+<span class="w">    </span><span class="n">K_L</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">P_L</span><span class="o">*</span><span class="p">(</span><span class="n">C</span><span class="p">.</span><span class="n">transpose</span><span class="p">())</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">C</span><span class="o">*</span><span class="n">P_L</span><span class="o">*</span><span class="p">(</span><span class="n">C</span><span class="p">.</span><span class="n">transpose</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">R_L</span><span class="p">).</span><span class="n">inverse</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="n">X_L</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">X_L</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">K_L</span><span class="o">*</span><span class="p">(</span><span class="n">Y_L</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">C</span><span class="o">*</span><span class="n">X_L</span><span class="p">);</span><span class="w">  </span><span class="c1">// get new X(estimated state)</span>
+<span class="w">    </span><span class="n">P_L</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">MatrixXf</span><span class="o">::</span><span class="n">Identity</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">K_L</span><span class="o">*</span><span class="n">C</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">P_L</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">X_L</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span><span class="w">        </span><span class="c1">// get estimated velocity</span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="runtime-test">
+<h2>Runtime Test<a class="headerlink" href="#runtime-test" title="Permalink to this heading"></a></h2>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">runstarttime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">micros</span><span class="p">();</span><span class="w"></span>
+<span class="c1">//******************************************************************************************************</span>
+<span class="n">Pulse2Position</span><span class="p">();</span><span class="w"></span>
+<span class="n">estimated_rightvel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">update_rightwheel</span><span class="p">(</span><span class="n">Right_DegRel</span><span class="p">,</span><span class="w"> </span><span class="n">Right_DegSec</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">M_PI</span><span class="o">/</span><span class="mi">180</span><span class="p">)</span><span class="o">*</span><span class="mf">0.085</span><span class="p">;</span><span class="w">        </span><span class="c1">// DegSec to m/s</span>
+<span class="n">estimated_leftvel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">update_leftwheel</span><span class="p">(</span><span class="n">Left_DegRel</span><span class="p">,</span><span class="w"> </span><span class="n">Left_DegSec</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">M_PI</span><span class="o">/</span><span class="mi">180</span><span class="p">)</span><span class="o">*</span><span class="mf">0.085</span><span class="p">;</span><span class="w">            </span><span class="c1">// DegSec to m/s</span>
+<span class="c1">//******************************************************************************************************</span>
+<span class="n">runtime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">micros</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">runstarttime</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Runtime: 0.059 ms</p>
+</div>
 </div>
 
 

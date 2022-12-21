@@ -41,6 +41,7 @@
               <p class="caption" role="heading"><span class="caption-text">Hardwares and Connection:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Microcontroller</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#why-stm32h745zi">Why STM32H745ZI?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nucleo-h745zi-q">NUCLEO-H745ZI-Q</a></li>
 </ul>
 </li>
@@ -106,10 +107,22 @@
 feedback for state estimation is Controller Area Network (CAN Bus) which is different from normal single-ended communication
 like I2C or SPI because of its logic level and some additional setup to perform perfect communication. This makes the method
 of communication unpopular to be installed on general purpose microcontroller like STM32F411RE. But in the same high performance
-mcu family, there is STM32H745ZI dual core mcu which has CAN peripheral called FDCAN. So we decided to use this mcu as our main
+mcu family, there is a STM32H745ZI dual core mcu which has CAN peripheral called FDCAN. So we decided to use this mcu as our main
 controller as it has all features we need and dual cores make it easy to prioritize tasks.</p>
+<div class="section" id="why-stm32h745zi">
+<h2>Why STM32H745ZI?<a class="headerlink" href="#why-stm32h745zi" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>FDCAN Peripheral is available for Controller Area Network (CAN) device communication</p></li>
+<li><p>Being a dual-core MCU, tasks can be managed separately for each core in order to reduce the overall runtime of the system, or to
+manage unrelated tasks separately, such as having M7 perform kinematics matrix calculations and M4 delivering data up to ROS2</p></li>
+<li><p>Can check the performance of one core from another core if one of the cores is malfunctioning</p></li>
+<li><p>Has more peripheral numbers than STM32F411RE</p></li>
+<li><p>Development board NUCLEO-H745ZI-Q is available for immediate use</p></li>
+</ul>
+</div>
 <div class="section" id="nucleo-h745zi-q">
 <h2>NUCLEO-H745ZI-Q<a class="headerlink" href="#nucleo-h745zi-q" title="Permalink to this heading"></a></h2>
+<img alt="../_images/nucleo-h745zi-q.jpg" src="../_images/nucleo-h745zi-q.jpg" />
 </div>
 </div>
 

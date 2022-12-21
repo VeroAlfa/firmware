@@ -38,15 +38,47 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Microcontroller System:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Hardwares and Connection:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="microcontroller.html">Microcontroller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hub-motor-and-driver.html">Hub Motor and Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imu-sensor.html">IMU Sensor</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Microcontroller Subsystem:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="hub-motor-interface.html">Hub Motor Interface</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">IMU Interface</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">IMU Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#connected-to-nucleo-h745zi-q">Connected to NUCLEO-H745ZI-Q</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#prepare-before-stm32cubeide">Prepare before STM32CubeIDE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bno055-with-stm32cubeide">BNO055 with STM32CubeIDE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#implemention-core-m7">Implemention (Core M7)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#runtime-test">Runtime Test</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="wheel-velocity-estimation.html">Wheel Velocity Estimation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="forward-kinematics.html">Forward Kinematics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="inverse-kinematics.html">Inverse Kinematics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wheel-odometry-computation.html">Wheel Odometry Computation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ros2-interface.html">ROS2 Interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">ROS2:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ros2-setup.html">ROS2 Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xicro-package.html">Xicro Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="calibration-package.html">Calibration Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="step-to-open.html">Steps to open ROS2 nodes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Gripper:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="hardware-gripper.html">Hardware Gripper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="control-algorithm.html">Control Algorithms</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Test and Evaluation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="process-timing.html">Process Timing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wheel-odometry.html">Wheel Odometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gripper-experiment.html">Gripper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="summary.html">Firmware Summary</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
@@ -86,6 +118,107 @@
              
   <div class="section" id="imu-interface">
 <h1>IMU Interface<a class="headerlink" href="#imu-interface" title="Permalink to this heading"></a></h1>
+<div class="section" id="connected-to-nucleo-h745zi-q">
+<h2>Connected to NUCLEO-H745ZI-Q<a class="headerlink" href="#connected-to-nucleo-h745zi-q" title="Permalink to this heading"></a></h2>
+<p>Use all 4 pins; Vin(3.3V), GND(Ground), SDA(I2C), SCL(I2C) directly connected to the board according to the PIN specified in STM32CubeIDE</p>
+</div>
+<div class="section" id="prepare-before-stm32cubeide">
+<h2>Prepare before STM32CubeIDE<a class="headerlink" href="#prepare-before-stm32cubeide" title="Permalink to this heading"></a></h2>
+<p>Before starting to work in STM32CubeIDE, we need to prepare a library for using BNO055 and sending values ​​to ROS2 with the following step:</p>
+<ul class="simple">
+<li><p>Download or Clone the files bno055.c, bno055.h, and bno055_stm32.h from <a class="reference external" href="https://github.com/ivyknob/bno055_stm32">https://github.com/ivyknob/bno055_stm32</a></p></li>
+</ul>
+</div>
+<div class="section" id="bno055-with-stm32cubeide">
+<h2>BNO055 with STM32CubeIDE<a class="headerlink" href="#bno055-with-stm32cubeide" title="Permalink to this heading"></a></h2>
+<p>We will use STM32CubeIDE to use BNO055 and send values ​​on ROS2 by following steps.</p>
+<ol class="arabic">
+<li><p>Create an STM32CubeIDE Project with board selected as NUCLEO-H745ZI-Q and set the file to C</p></li>
+<li><p>TIM1 and I2C1 pins are enabled with the following settings.</p>
+<blockquote>
+<div><img alt="../_images/imu_interface1.png" class="align-center" src="../_images/imu_interface1.png" />
+<img alt="../_images/imu_interface2.png" class="align-center" src="../_images/imu_interface2.png" />
+<img alt="../_images/imu_interface3.png" class="align-center" src="../_images/imu_interface3.png" />
+<img alt="../_images/imu_interface4.png" class="align-center" src="../_images/imu_interface4.png" />
+<img alt="../_images/imu_interface5.png" class="align-center" src="../_images/imu_interface5.png" />
+<img alt="../_images/imu_interface6.png" class="align-center" src="../_images/imu_interface6.png" />
+<img alt="../_images/imu_interface7.png" class="align-center" src="../_images/imu_interface7.png" />
+<img alt="../_images/imu_interface8.png" class="align-center" src="../_images/imu_interface8.png" />
+</div></blockquote>
+</li>
+<li><p>Generate code from IOC</p></li>
+<li><p>Place the bno055.c file in the Src folder, bno055.h, bno055_stm32.h in Inc folder</p>
+<blockquote>
+<div><img alt="../_images/imu_interface9.png" class="align-center" src="../_images/imu_interface9.png" />
+</div></blockquote>
+</li>
+<li><p>Within main.c can be written and within file bno055_stm32.h delete the line #include “i2c.h” (will not delete if STM32 Project Generate Peripheral file comes out or we check the option as below picture in .ioc file)</p>
+<blockquote>
+<div><img alt="../_images/imu_interface10.png" class="align-center" src="../_images/imu_interface10.png" />
+</div></blockquote>
+</li>
+<li><p>Build and Upload to board</p></li>
+<li><p>Continue in <a class="reference internal" href="ros2-interface.html"><span class="doc">ROS2 Interface</span></a></p></li>
+</ol>
+</div>
+<div class="section" id="implemention-core-m7">
+<h2>Implemention (Core M7)<a class="headerlink" href="#implemention-core-m7" title="Permalink to this heading"></a></h2>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// BNO055 Read Raw IMU Data</span>
+<span class="n">bno055_vector_t</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bno055_getVectorQuaternion</span><span class="p">();</span><span class="w"></span>
+<span class="n">qw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">w</span><span class="p">;</span><span class="w"></span>
+<span class="n">qx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">x</span><span class="p">;</span><span class="w"></span>
+<span class="n">qy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">y</span><span class="p">;</span><span class="w"></span>
+<span class="n">qz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">z</span><span class="p">;</span><span class="w"></span>
+<span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bno055_getVectorLinearAccel</span><span class="p">();</span><span class="w"></span>
+<span class="n">ax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">x</span><span class="p">;</span><span class="w"></span>
+<span class="n">ay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">y</span><span class="p">;</span><span class="w"></span>
+<span class="n">az</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">z</span><span class="p">;</span><span class="w"></span>
+<span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bno055_getVectorGyroscope</span><span class="p">();</span><span class="w"></span>
+<span class="n">gx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">x</span><span class="p">;</span><span class="w"></span>
+<span class="n">gy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">y</span><span class="p">;</span><span class="w"></span>
+<span class="n">gz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">z</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="runtime-test">
+<h2>Runtime Test<a class="headerlink" href="#runtime-test" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>IMU Initialization</p></li>
+</ul>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">runstarttime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">micros</span><span class="p">();</span><span class="w"></span>
+<span class="c1">//***********************************************</span>
+<span class="n">bno055_assignI2C</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hi2c1</span><span class="p">);</span><span class="w"></span>
+<span class="n">bno055_setup</span><span class="p">();</span><span class="w"></span>
+<span class="n">bno055_setOperationModeNDOF</span><span class="p">();</span><span class="w"></span>
+<span class="c1">//***********************************************</span>
+<span class="n">runtime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">micros</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">runstarttime</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Runtime: 739.833 - 741.696 ms</p>
+<ul class="simple">
+<li><p>IMU Read Raw Data</p></li>
+</ul>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">runstarttime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">micros</span><span class="p">();</span><span class="w"></span>
+<span class="c1">//***********************************************</span>
+<span class="n">bno055_vector_t</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bno055_getVectorQuaternion</span><span class="p">();</span><span class="w"></span>
+<span class="n">qw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">w</span><span class="p">;</span><span class="w"></span>
+<span class="n">qx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">x</span><span class="p">;</span><span class="w"></span>
+<span class="n">qy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">y</span><span class="p">;</span><span class="w"></span>
+<span class="n">qz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">z</span><span class="p">;</span><span class="w"></span>
+<span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bno055_getVectorLinearAccel</span><span class="p">();</span><span class="w"></span>
+<span class="n">ax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">x</span><span class="p">;</span><span class="w"></span>
+<span class="n">ay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">y</span><span class="p">;</span><span class="w"></span>
+<span class="n">az</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">z</span><span class="p">;</span><span class="w"></span>
+<span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bno055_getVectorGyroscope</span><span class="p">();</span><span class="w"></span>
+<span class="n">gx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">x</span><span class="p">;</span><span class="w"></span>
+<span class="n">gy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">y</span><span class="p">;</span><span class="w"></span>
+<span class="n">gz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">z</span><span class="p">;</span><span class="w"></span>
+<span class="c1">//***********************************************</span>
+<span class="n">runtime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">micros</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">runstarttime</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Runtime: 3.980 - 7.463 ms</p>
+</div>
 </div>
 
 

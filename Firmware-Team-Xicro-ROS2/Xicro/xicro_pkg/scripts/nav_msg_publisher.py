@@ -121,6 +121,7 @@ class NavMsgPublisher(Node):
                                     0.0, 0.0, 0.0, 0.0, 0.0, 0.0530721471,]
         
         self.wheel_odometry_publisher.publish(odom_msg)
+        
 #################################################################################################
         t = TransformStamped()
 

@@ -58,7 +58,11 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="ros2-setup.html">ROS2 Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="xicro-package.html">Xicro Package</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Calibration Package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Calibration Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#calibration-subscriber">Calibration subscriber</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#calibration-server">Calibration server</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="step-to-open.html">Steps to open ROS2 nodes</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
@@ -99,6 +103,88 @@
              
   <div class="section" id="calibration-package">
 <h1>Calibration Package<a class="headerlink" href="#calibration-package" title="Permalink to this heading"></a></h1>
+<div class="section" id="calibration-subscriber">
+<h2>Calibration subscriber<a class="headerlink" href="#calibration-subscriber" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Publish Topic</p>
+<ul>
+<li><p>/imu/data (sensor_msgs/msg/Imu)</p></li>
+<li><p>/wheel/odometry (nav_msgs/msg/Odometry)</p></li>
+</ul>
+</li>
+<li><p>Subscribe Topic</p>
+<ul>
+<li><p>/imu_stm32 (xicro_interfaces/msg/Imu)</p></li>
+</ul>
+</li>
+<li><p>Number of samples: 500</p></li>
+<li><p>Data: [msg.linear_acceleration.x, msg.linear_acceleration.y, msg.linear_acceleration.z, msg.angular_velocity.x, msg.angular_velocity.y, msg.angular_velocity.z]</p></li>
+</ul>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Calibration</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">action_server</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;calibration_subscriber&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sensor_sub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span><span class="n">Imu</span><span class="p">,</span><span class="s1">&#39;/imu_stm32&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">sensor_callback</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_server</span> <span class="o">=</span> <span class="n">action_server</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isEnable</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_sample</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="k">def</span> <span class="nf">sensor_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">msg</span><span class="p">:</span><span class="n">Imu</span><span class="p">):</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="p">[</span><span class="n">msg</span><span class="o">.</span><span class="n">linear_acceleration</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">msg</span><span class="o">.</span><span class="n">linear_acceleration</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">msg</span><span class="o">.</span><span class="n">linear_acceleration</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">msg</span><span class="o">.</span><span class="n">angular_velocity</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">msg</span><span class="o">.</span><span class="n">angular_velocity</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">msg</span><span class="o">.</span><span class="n">angular_velocity</span><span class="o">.</span><span class="n">z</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_server</span><span class="o">.</span><span class="n">sensor_data</span> <span class="o">=</span> <span class="n">temp</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="calibration-server">
+<h2>Calibration server<a class="headerlink" href="#calibration-server" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Action Server</p>
+<ul>
+<li><p>/calibrate</p></li>
+</ul>
+</li>
+<li><p>Output Yaml file</p>
+<ul>
+<li><p>calibration/config/sensor_properties.yaml</p></li>
+</ul>
+</li>
+<li><p>Sampling duration per action + Calibration process: 5-10 s</p></li>
+</ul>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CalibrationActionServer</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;calibration_server&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_rate</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_server</span> <span class="o">=</span> <span class="n">ActionServer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Calibrate</span><span class="p">,</span><span class="s1">&#39;/calibrate&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">execute_callback</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sensor_data</span> <span class="o">=</span> <span class="n">Float64MultiArray</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">collected_data</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">execute_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">goal_handle</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Executing action...&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">collected_data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">feedback_msg</span> <span class="o">=</span> <span class="n">Calibrate</span><span class="o">.</span><span class="n">Feedback</span><span class="p">()</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="n">goal_handle</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">num</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">collected_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sensor_data</span><span class="p">)</span>
+            <span class="n">feedback_msg</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sensor_data</span>
+            <span class="n">goal_handle</span><span class="o">.</span><span class="n">publish_feedback</span><span class="p">(</span><span class="n">feedback_msg</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rate</span><span class="o">.</span><span class="n">sleep</span><span class="p">()</span>
+        <span class="c1"># get result to succeed</span>
+        <span class="n">goal_handle</span><span class="o">.</span><span class="n">succeed</span><span class="p">()</span>
+        <span class="n">data_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">collected_data</span><span class="p">)</span>
+
+        <span class="c1"># return absolute distance as result</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">Calibrate</span><span class="o">.</span><span class="n">Result</span><span class="p">()</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data_array</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">data_array</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">covariance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">data_array</span><span class="o">.</span><span class="n">T</span><span class="p">),(</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">calibration_path</span> <span class="o">=</span> <span class="n">get_package_share_directory</span><span class="p">(</span><span class="s1">&#39;calibration&#39;</span><span class="p">)</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">calibration_path</span><span class="p">,</span><span class="s1">&#39;config&#39;</span><span class="p">,</span><span class="s1">&#39;sensor_properties.yaml&#39;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">({</span><span class="s1">&#39;mean&#39;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="s1">&#39;covariance&#39;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">covariance</span><span class="p">},</span><span class="n">f</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;gedit &quot;</span><span class="o">+</span><span class="n">file</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 

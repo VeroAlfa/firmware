@@ -60,16 +60,17 @@
 <li class="toctree-l1"><a class="reference internal" href="pages/calibration-package.html">Calibration Package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/step-to-open.html">Steps to open ROS2 nodes</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Gripper:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="pages/dummy1.html">Dummy 1</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pages/manipulator-firmware.html">Manipulator Firmware</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pages/mobile-robot-firmware.html">Mobile Robot Firmware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/hardware-gripper.html">Hardware Gripper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/control-algorithm.html">Control Algorithms</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">File:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Test and Evaluation:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="pages/hardware-uses.html">Hardware Uses</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pages/hardware-references.html">Hardware References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/process-timing.html">Process Timing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/wheel-odometry.html">Wheel Odometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/gripper-experiment.html">Gripper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/summary.html">Firmware Summary</a></li>
 </ul>
 
         </div>
@@ -98,8 +99,66 @@
              
   <div class="section" id="mbse-2022-1-firmware-team-documentation">
 <h1>MBSE-2022-1/Firmware-Team Documentation<a class="headerlink" href="#mbse-2022-1-firmware-team-documentation" title="Permalink to this heading"></a></h1>
-<p>Hello world!!! <em>This</em> is firm ware team <strong>MBSE-2022-1</strong></p>
-<p><code class="docutils literal notranslate"><span class="pre">code</span> <span class="pre">code</span> <span class="pre">code</span></code></p>
+<p><strong>MEMBERS</strong></p>
+<ol class="arabic simple">
+<li><p>Nattapat Jatuwong   63340500011 (Mobile Robot)</p></li>
+<li><p>Paphada  Prasongsuk 63340500033 (Gripper)</p></li>
+<li><p>Sorapas  Weerakul   63340500064 (Mobile Robot)</p></li>
+</ol>
+<div class="section" id="robocup-home-requirement">
+<h2><a class="reference external" href="mailto:RoboCup&#37;&#52;&#48;Home">RoboCup<span>&#64;</span>Home</a> Requirement<a class="headerlink" href="#robocup-home-requirement" title="Permalink to this heading"></a></h2>
+<p>SAFE NAVIGATION (indoors, with obstacle avoidance)</p>
+</div>
+<div class="section" id="mobile-robot-requirement">
+<h2>Mobile Robot Requirement<a class="headerlink" href="#mobile-robot-requirement" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>The robot must automatically move to the position specified by the user</strong></p>
+<ul>
+<li><p>Firmware system must calculate the current robot’s pose for navigation</p>
+<ul>
+<li><p>Pose is calculated using wheel odometry from the robot twist</p></li>
+</ul>
+</li>
+<li><p>The robot must move at a safe speed for its surroundings</p>
+<ul>
+<li><p>The robot must move at a linear velocity no more than 0.1335 m/s</p></li>
+</ul>
+</li>
+<li><p>The robot must have a manual control for quick setup and repositioning</p>
+<ul>
+<li><p>Users must control the robot with Teleop twist keyboard on ROS2.</p></li>
+</ul>
+</li>
+<li><p>Firmware system must be able to interface between ROS2</p>
+<ul>
+<li><p>ROS2 must send a velocity command to make the robot move at a desired speed</p></li>
+<li><p>The microcontroller must be able to send the robot’s pose and imu raw data to ROS2</p></li>
+<li><p>Communication between devices must be implemented with a frequency greater than or equal to 20 Hz</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="gripper-requirement">
+<h2>Gripper Requirement<a class="headerlink" href="#gripper-requirement" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>The gripper must be able to pick up items without dropping them and the user can control the opening/closing of the gripper</strong></p>
+<ul>
+<li><p>Firmware system must apply the gripper’s force to properly pick up objects</p>
+<ul>
+<li><p>Use a sensor such as present load from DYNAMIXEL to measure the force used to pick up objects</p></li>
+</ul>
+</li>
+<li><p>Firmware system must be able to interface between ROS2</p>
+<ul>
+<li><p>ROS2 must command the gripper to pick up or release an object</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
 <div class="section" id="system-architecture">
 <h2>System Architecture<a class="headerlink" href="#system-architecture" title="Permalink to this heading"></a></h2>
 <ul>
@@ -128,6 +187,8 @@
 </li>
 </ul>
 </li>
+</ul>
+<ul id="ros2arc">
 <li><p><strong>ROS2 Architecture</strong></p>
 <blockquote>
 <div><img alt="_images/ros2_architecture.png" src="_images/ros2_architecture.png" />
@@ -160,10 +221,9 @@
 <div class="section" id="links">
 <h1>Links<a class="headerlink" href="#links" title="Permalink to this heading"></a></h1>
 <ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
-<li><p>Source code: <a class="reference external" href="https://github.com/MBSE-2022-1/Firmware-Team">https://github.com/MBSE-2022-1/Firmware-Team</a></p></li>
+<li><p>Source code 1: <a class="reference external" href="https://github.com/MBSE-2022-1/Firmware-Team">https://github.com/MBSE-2022-1/Firmware-Team</a></p></li>
+<li><p>Source code 2: <a class="reference external" href="https://github.com/VeroAlfa/firmware">https://github.com/VeroAlfa/firmware</a></p></li>
+<li><p>Presentation: <a class="reference external" href="https://www.canva.com/design/DAFJLsuDONk/y8OhFXQYMBOMdz5iGOFIEg/view?utm_content=DAFJLsuDONk&amp;utm_campaign=designshare&amp;utm_medium=link&amp;utm_source=publishsharelink">Canva</a></p></li>
 </ul>
 </div>
 

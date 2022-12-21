@@ -5,9 +5,50 @@
 
 MBSE-2022-1/Firmware-Team Documentation
 =======================================
-Hello world!!! *This* is firm ware team **MBSE-2022-1**
+**MEMBERS**
 
-``code code code``
+#. Nattapat Jatuwong   63340500011 (Mobile Robot)
+#. Paphada  Prasongsuk 63340500033 (Gripper)
+#. Sorapas  Weerakul   63340500064 (Mobile Robot)
+
+RoboCup@Home Requirement
+------------------------
+SAFE NAVIGATION (indoors, with obstacle avoidance)
+
+Mobile Robot Requirement
+------------------------
+- **The robot must automatically move to the position specified by the user** 
+
+  * Firmware system must calculate the current robot's pose for navigation
+  
+    + Pose is calculated using wheel odometry from the robot twist
+  
+  * The robot must move at a safe speed for its surroundings 
+    
+    + The robot must move at a linear velocity no more than 0.1335 m/s
+ 
+  * The robot must have a manual control for quick setup and repositioning
+    
+    + Users must control the robot with Teleop twist keyboard on ROS2.
+ 
+  * Firmware system must be able to interface between ROS2
+
+    + ROS2 must send a velocity command to make the robot move at a desired speed
+    + The microcontroller must be able to send the robot's pose and imu raw data to ROS2
+    + Communication between devices must be implemented with a frequency greater than or equal to 20 Hz
+ 
+
+Gripper Requirement
+-------------------
+- **The gripper must be able to pick up items without dropping them and the user can control the opening/closing of the gripper**
+  
+  * Firmware system must apply the gripper's force to properly pick up objects
+  
+    + Use a sensor such as present load from DYNAMIXEL to measure the force used to pick up objects
+  
+  * Firmware system must be able to interface between ROS2
+    
+    + ROS2 must command the gripper to pick up or release an object
 
 System Architecture
 -------------------
@@ -30,6 +71,8 @@ System Architecture
     + :doc:`Inverse Kinematics </pages/inverse-kinematics>`
     + :doc:`Wheel Odematry Computation </pages/wheel-odometry-computation>`
     + :doc:`ROS2 Interface </pages/ros2-interface>`
+
+.. _ros2Arc:
 
 - **ROS2 Architecture**
 
@@ -76,28 +119,27 @@ System Architecture
    pages/calibration-package
    pages/step-to-open
 
+.. toctree::
+   :maxdepth: 3
+   :caption: Gripper:
+   :hidden:
+
+   pages/hardware-gripper
+   pages/control-algorithm
 
 .. toctree::
    :maxdepth: 3
-   :caption: Contents:
+   :caption: Test and Evaluation:
    :hidden:
 
-   pages/dummy1
-   pages/manipulator-firmware
-   pages/mobile-robot-firmware
-
-.. toctree::
-   :maxdepth: 3
-   :caption: File:
-   :hidden:
-
-   pages/hardware-uses
-   pages/hardware-references
+   pages/process-timing
+   pages/wheel-odometry
+   pages/gripper-experiment
+   pages/summary
 
 Links
-==================
+=====
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-* Source code: https://github.com/MBSE-2022-1/Firmware-Team
+* Source code 1: https://github.com/MBSE-2022-1/Firmware-Team
+* Source code 2: https://github.com/VeroAlfa/firmware
+* Presentation: `Canva <https://www.canva.com/design/DAFJLsuDONk/y8OhFXQYMBOMdz5iGOFIEg/view?utm_content=DAFJLsuDONk&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink>`_

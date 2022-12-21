@@ -41,7 +41,11 @@
               <p class="caption" role="heading"><span class="caption-text">Hardwares and Connection:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="microcontroller.html">Microcontroller</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Hub Motor and Driver</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Hub Motor and Driver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#zllg65asm250-4096-v2-0">ZLLG65ASM250-4096 V2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#zlac706-can">ZLAC706-CAN</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="imu-sensor.html">IMU Sensor</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Microcontroller Subsystem:</span></p>
@@ -53,6 +57,19 @@
 <li class="toctree-l1"><a class="reference internal" href="inverse-kinematics.html">Inverse Kinematics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wheel-odometry-computation.html">Wheel Odometry Computation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ros2-interface.html">ROS2 Interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">ROS2:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ros2-setup.html">ROS2 Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xicro-package.html">Xicro Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="calibration-package.html">Calibration Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="step-to-open.html">Steps to open ROS2 nodes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Test and Evaluation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="process-timing.html">Process Timing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wheel-odometry.html">Wheel Odometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="summary.html">Firmware Summary</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
@@ -92,6 +109,56 @@
              
   <div class="section" id="hub-motor-and-driver">
 <h1>Hub Motor and Driver<a class="headerlink" href="#hub-motor-and-driver" title="Permalink to this heading"></a></h1>
+<p>Firmware-Team is using ZLTECH’s hub motor and driver provided by Aj.Pi for both wheels.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Product Name</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Hub Motor</p></td>
+<td><p>ZLLG65ASM250-4096 V2.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Driver</p></td>
+<td><p>ZLAC706-CAN</p></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="zllg65asm250-4096-v2-0">
+<h2>ZLLG65ASM250-4096 V2.0<a class="headerlink" href="#zllg65asm250-4096-v2-0" title="Permalink to this heading"></a></h2>
+<a class="reference internal image-reference" href="../_images/hubmotor.jpg"><img alt="../_images/hubmotor.jpg" class="align-center" src="../_images/hubmotor.jpg" style="width: 400px; height: 400px;" /></a>
+<p><a class="reference external" href="http://zlrobotmotor.com/info/383.html">ZLLG65ASM250-4096 V2.0</a> is a ZLTECH’s servo hub motor with an built-in encoder
+specially designed for mobile robot application and also powered by 24-48 VDC. Here is some specification of this hub motor</p>
+<a class="reference internal image-reference" href="../_images/hubmotor_spec.jpg"><img alt="../_images/hubmotor_spec.jpg" class="align-center" src="../_images/hubmotor_spec.jpg" style="width: 375px; height: 497px;" /></a>
+<p><strong>Basic Features:</strong></p>
+<ul class="simple">
+<li><p>Hub Servo Motor for Robot, AGV</p></li>
+<li><p>24-48VDC, 350 W</p></li>
+<li><p>Rated speed: 200 rpm</p></li>
+<li><p>Rated torque: 8 Nm</p></li>
+<li><p>Max capacity: 150 kg/2 motors</p></li>
+<li><p>Brake: Electric brake</p></li>
+</ul>
+</div>
+<div class="section" id="zlac706-can">
+<h2>ZLAC706-CAN<a class="headerlink" href="#zlac706-can" title="Permalink to this heading"></a></h2>
+<a class="reference internal image-reference" href="../_images/motor_driver.png"><img alt="../_images/motor_driver.png" class="align-center" src="../_images/motor_driver.png" style="width: 516px; height: 402px;" /></a>
+<p><a class="reference external" href="https://drive.google.com/file/d/1_zax1QebzwfDw8Wtzx-VV3qV7C4o2Byv/view">ZLAC706-CAN</a> is a ZLTECH’s servo driver with CAN communication protocol</p>
+<p><strong>Basic Features:</strong></p>
+<ul class="simple">
+<li><p>Low Voltage Servo Driver</p></li>
+<li><p>24-60VDC for 400 W motor</p></li>
+<li><p>Output current: average 8A, peak 24A</p></li>
+<li><p>Output speed: up to 1000 rpm</p></li>
+<li><p>Communication: CAN, RS232</p></li>
+<li><p>Software parameter setting (RS232)</p></li>
+</ul>
+</div>
 </div>
 
 
